@@ -1,0 +1,764 @@
+def 함수이름 (인자1, 인자2, ..옵션)
+	실행문1
+	실행문2
+	return 반환값(옵션)
+
+**** 리턴 타입을 지정해주지 않고 시작함
+ 그래서 리턴을 쓸수도 있고 안쓸수도 있음
+
+-------------------------------------------------------
+
+def calculate_rectangle_area(x, y):
+    return x * y
+
+
+assert calculate_rectangle_area(2, 3) == 6
+
+**assert 체크해서 공식이 맞는지 확인할 수 있음
+** 아무 결과값이 없으면 문제 없는 것.
+** 함수 만들때는 결과값을 확인하는걸로 가능(True False 로 판단할 수 있는건 모두 들어갈 수 있음
+
+----------------------------------------------------------
+
+def calculate_rectangle_area(x, y):
+    return x * y
+
+
+assert calculate_rectangle_area(2, 3) == 6
+
+ rectangle_x = 10
+ rectangle_y = 20
+ print("사각형 x의 길이:", rectangle_x)
+ print("사각형 y의 길이:", rectangle_y)
+ print("사각형의 넓이:", calculate_rectangle_area(rectangle_x, rectangle_y))
+
+-------------------------------------------------------------------------------
+
+
+def shopping_cart(goods):		함수 안에 있는 지역변수
+    goods.append('coupon')			로컬변수 함수 실행이 되면 사라진다.		
+    goods = [1, 2]				1, 2 사라진다.
+    print("In shoppin_cart:", goods)
+
+shopping_list = ['bean', 'salt', 'beef']	
+		레퍼런스 변수		글로벌 변수 리스트객체를 만들어 shopping_list에 넣음	
+shopping_cart(shopping_list)				레퍼런스 복사.
+print("Goods  I bought:", shopping_list)
+
+-------------------------------------------------------------------------------------
+
+
+def test(x):
+    print(x)
+    t = 20
+    print("In test t, a:", t, a)
+
+a = 10
+test(a)
+print("In main x:", a)
+#print("In main t:", t)
+
+글로벌 변수와 로컬변수 개념 알아두기
+함수에서 정해진 값은 밖을 나오면 없어진다.
+
+--------------------------------------------------------------------------------
+
+
+def f():
+    s = "I love Doosan!"
+    print(s)
+
+s = "I love Hanhwa!"
+f()
+print(s)
+
+결과값 I love Doosan!
+         I love Hanhwa!
+
+
+함수 안에 있는 로컬변수를 이용해서 밖에 있는 s 역시 바꾸고 싶다.
+
+def f():
+    global s
+    s = "I love Doosan!"
+    print(s)
+
+s = "I love Hanhwa!"
+f()
+print(s)
+
+결과값 I love Doosan!
+         I love Doosan!
+
+
+-------------------------------------------------------------------------------
+
+def calculate(x, y):
+    total = x + y			//로컬변수 선언 // 함수 내에서 있는 모든 total 은 이 total을 의미한다.
+    print("In Function")
+    print("a:", str(a), "b", str(b), "a + b:", str(a + b), "total:", str(total))
+    return total
+
+a = 5
+b = 7
+total = 0
+print("In Main")
+print("a:", str(a), "b:", str(b), "a + b:", str(a + b))
+
+sum = calculate(a, b)
+print("After Calculation")
+print("Total:", str(total), "Sum:", str(sum))
+
+----------------------------------------------------------------------------------
+
+def print_name(my_name, your_name):
+    print("Hello {0}, MY name is {1}".format(your_name, my_name))  **format 스트링 객체를 사용 가능
+
+print_name("Tom", "Jane")
+print_name(your_name="Jane", my_name="Tom")
+
+-----------------------------------------------------------------------------------
+
+def print_name(my_name, your_name='Jane'):
+    print("Hello {0}, MY name is {1}".format(your_name, my_name))
+
+print_name("Tom", "Jane")
+print_name("Tom")  
+
+결과값
+Hello Jane, MY name is Tom
+Hello Jane, MY name is Tom
+
+기본값을 Jane 으로 넣어두면 결과값 출력시 Jane 이 없어도 나옴
+
+-------------------------------------------------------------------------------------
+
+def variable_length(a, b, *args): # 맨 마지막에 와야 함
+    print(a)			*뒤에 아무이름이 와도 괜찮다.
+    print(b)
+    print(args)	* 선언 이후의 모든 항목들이 들어온다.
+
+variable_length(1, 2, 3, 4, 5)
+
+결과값
+1
+2
+(3, 4, 5)
+
+------------------------------------------------------------------------
+
+s = "BLACK LIVES MATTER"
+print(s.upper())	//대문자
+print(s.lower())	//소문자
+print(s.title())	//각 문장 앞글자 대문자
+print(s.capitalize())	//전체 문장 앞글자만 대문자
+print(s.count("T"))	//대문자 T 개수
+print(s.startswith("B"))	//B로 시작하는가
+
+k = "123"
+print(k.isdigit())	//숫자인가
+
+-----------------------------------------------------------------------------
+
+print(1, 2, 3)
+print("%d %d %d" %(1, 2, 3))
+print("%s--%s--%s" %('abc', 'def', 'gji'))
+print("{} {} {}".format('abc', 'def', 'gji'))
+print("{1} {0} {2}".format('abc', 'def', 'gji'))	//인덱스 순서대로 넣는다.
+print(f"{'def'}{'abc'}{'ghi'}")			//붙여서 출력
+print("{0:>10s}".format('python'))		//오른쪽 10칸 (10칸 안에 글자 넣는다)
+print("{0:<10s}".format('python'))		//왼쪽 10칸 (10칸 안에 글자 넣는다)
+print(f"{'python':>10s}")			//오른쪽 10칸 (10칸 안에 글자 넣는다)		
+print(f"{'python':<10s}")			//왼쪽 10칸 (10칸 안에 글자 넣는다)
+1 2 3
+1 2 3
+abc--def--gji
+abc def gji
+def abc gji
+defabcghi
+    python
+python    
+    python
+python 
+
+------------------------------------------------------------------------
+
+items = 'zero one two three'.split()		//리스트로 만들어줌
+print(items)
+
+examples = 'python,javascript,sql'
+print(examples.split(','))			//같은 방법 , 를 기준으로 스플릿 해라
+a, b, c = examples.split(',')
+print(a, b, c)				
+
+-----------------------------------------------------------------------------
+
+colors = ['red', 'blue', 'green', 'yellow']
+result = ''.join(colors)
+print(result)
+
+**redbluegreenyellow
+
+result = ' '.join(colors)
+print(result)
+
+**red blue green yellow
+
+result = ', '.join(colors)
+print(result)
+
+**red, blue, green, yellow
+
+result = '-'.join(colors)
+print(result)
+
+red-blue-green-yellow
+
+
+--------------------------------------------------------------------------------
+
+
+자료구조
+
+Stack 구조 
+버킷을 생각해보자
+예전 택시를 보면 잔돈을 위한 잔돈꽂이 가 있었다.
+
+그것처럼 하나씩 계속 끼워나가면 채워지고, 빼면 나가고
+
+Stack 에서 넣는걸 push 빼는걸 pop 이라고 한다.
+
+이 중 처음에 들어간놈은 맨 밑에 있지만, 가장 먼저 나가는 놈은 마지막에 들어온놈
+
+First in Last out 맨 처음 들어간 놈 입장
+Last in First out 마지막 나간놈의 입장
+
+이런 구조를 앞글자 따서 LIFO 구조라고 함
+이게 Stack 구조
+
+밑이 막혀있는 수직구조라고 생각하자 들어가면 쌓이게 됨
+
+Queue
+약국에서 마스크 사러 줄 서있음
+맨 먼저 온사람이 받는게 맞음
+
+Fisrt in First Out 
+
+수평구조 라고 생각하자 하나 들어가면 반대편에서 나갈 수 있다
+
+Tuple
+리스트와 비슷하지만, 데이타 변경이 안됨
+
+set(집합)
+데이터 중복을 허용하지 않음
+리스트같은데 중복을 허용하지 않음
+**순서가 없다. 첨자가 의미 없다.
+
+
+
+Dictionary
+고시원엔 큰 냉장고가 있다
+내 반찬에 라벨을 붙여놓는다
+
+Key:Value 형태로 저장
+특정 값에다가 키를 붙여놓고 밸류를 찾음
+
+
+collections 모듈
+위 자료구조를 지원하는 파이썬 내장 모듈
+
+
+---------------------------------------------------------------------------------------
+
+리스트를 Stack 구조로 사용할때 이런식으로 된다.
+
+a = [1, 2, 3, 4, 5]
+a.append(10)
+print(a)		[1, 2, 3, 4, 5, 10]
+a.append(20)
+print(a)		[1, 2, 3, 4, 5, 10, 20]
+print(a.pop())	20
+print(a)		[1, 2, 3, 4, 5, 10]
+print(a.pop()) 	10
+print(a) 		[1, 2, 3, 4, 5]
+
+-----------------------------------------------------------------------------------------
+
+
+word = input("Input a word:")
+word_list = list(word)
+print(word_list)			//입력된 단어를 리스트로 만들어 출력
+
+result = []			//result 는 리스트 타입
+for _ in range(len(word_list)):		//range(len(world_list)) ex)database = '8'  '_' 의미는 인풋받은값만 사용하겠다. 받은 값 그대로 돌려서 사용하겠다.
+    result.append(word_list.pop())	//리스트에서 맨 마지막걸 result에 입력 나머지는 사라지고
+				//돌아서 뒤에거를 하나 더 가져와서 입력 // 전체가 뒤집어짐
+
+print(result)
+print(word[::-1])
+
+Stack 구조를 이용해서 입력된 단어를 반대로 출력
+
+-------------------------------------------------------------------------------------------
+
+a = [1, 2, 3, 4, 5]
+a.append(10)
+a.append(20)
+print(a)
+print(a.pop(0))
+print(a)
+print(a.pop(0))
+print(a)
+
+[1, 2, 3, 4, 5, 10, 20]
+1
+[2, 3, 4, 5, 10, 20]
+2
+[3, 4, 5, 10, 20]
+
+//인덱스를 정해줘서 앞에부터 뺄 수 있게 만든다.
+// queue
+------------------------------------------------------------------------------------------
+
+t = (1, 2, 3)
+print( t+t, t*2)
+print(len(t))
+
+(1, 2, 3, 1, 2, 3) (1, 2, 3, 1, 2, 3)
+3
+
+() 로 선언 but 선언 후 안에 있는 항목을 바꿀 수 없다.
+
+t2 = (1)	//의미 없음
+print(t2)
+
+결과값 1 ( 그냥 t2 =1 해도 됨)
+
+t2 = (1,) 
+print(t2)
+
+결과값(1,)  - 튜플로 인식해줌
+
+------------------------------------------------------------------------------------------
+
+s = set([1, 2, 3, 4, 1, 2, 3])
+print(s)			{1, 2, 3, 4}
+
+s.add(1)			
+print(s)			{1, 2, 3, 4}
+s.remove(1)		
+print(s)			{2, 3, 4}	
+s.update([1, 4, 5, 6, 7])
+print(s)			{1, 2, 3, 4, 5, 6, 7}
+s.discard(3)
+print(s)			{1, 2, 4, 5, 6, 7}
+s.clear()
+print(s)			set()
+
+//중복을 없애버린다.
+
+s1 = set([1, 2, 3, 4, 5])
+s2 = set([3, 4, 5, 6, 7])
+
+print(s1.union(s2))		{1, 2, 3, 4, 5, 6, 7}
+print(s1 | s2)		{1, 2, 3, 4, 5, 6, 7}
+print(s1.intersection(s2))	{3, 4, 5}
+print(s1 & s2)		{3, 4, 5}
+print(s1.difference(s2))	{1, 2}
+print(s1 - s2)		{1, 2}
+
+
+--------------------------------------------------------------------------------------
+
+
+student_info = {20190001: 'Tom', 20190002: 'Jane', 20190003: 'Mike', 20190004: 'Jessica'}
+print(student_info[20190002])
+
+student_info[20190002] = 'Kate'
+print(student_info)
+
+student_info[20190005] = 'David'
+print(student_info)
+
+
+Jane
+{20190001: 'Tom', 20190002: 'Kate', 20190003: 'Mike', 20190004: 'Jessica'}
+{20190001: 'Tom', 20190002: 'Kate', 20190003: 'Mike', 20190004: 'Jessica', 20190005: 'David'}
+
+Dictionary key value 값 받아서 출력
+
+-------------------------------------------------------------------------------------------------
+
+country_code = {"USA": 1, 'Korea': 82, 'China': 86, 'Malaysia': 60}
+print(country_code)
+
+print(country_code.keys())		//키 값만 가져와서 리스트로 만들어준다.
+
+country_code['German'] = 49
+print(country_code)
+
+print(country_code.values())		//밸류 값만 가져와서 리스트로 만들어준다.
+print(country_code.items())		//키, 밸류 값만 가져와서 (튜플타입)리스트로 만들어준다.
+print()
+
+for k, v in country_code.items():
+    print("Key:", k)
+    print('Value:', v)
+
+print('Korea' in country_code.keys())
+print(85 in country_code.values())
+
+****************************************************************************
+
+{'USA': 1, 'Korea': 82, 'China': 86, 'Malaysia': 60}
+dict_keys(['USA', 'Korea', 'China', 'Malaysia'])
+{'USA': 1, 'Korea': 82, 'China': 86, 'Malaysia': 60, 'German': 49}
+dict_values([1, 82, 86, 60, 49])
+dict_items([('USA', 1), ('Korea', 82), ('China', 86), ('Malaysia', 60), ('German', 49)])
+
+Key: USA
+Value: 1
+Key: Korea
+Value: 82
+Key: China
+Value: 86
+Key: Malaysia
+Value: 60
+Key: German
+Value: 49
+True
+False
+
+
+------------------------------------------------------------------------------------
+
+collection 모듈
+기본 자료구조를 확장하여 미리 제작하고, 파이썬 모듈로 제공
+deque, OrderedDict, defaultdict, Counter, namedtuple 등
+
+deque 와 counter 많이 사용함
+
+
+deque 특징
+ 입출력이 가능함
+
+from collections import deque
+
+deque_list = deque()
+for i in range(5):
+    deque_list.append(i)
+
+print(deque_list)
+
+print(deque_list.pop())
+print(deque_list.pop())
+print(deque_list)
+
+deque_list.appendleft(5)
+deque_list.appendleft(6)
+print(deque_list)
+
+print(deque_list.popleft())
+print(deque_list.popleft())
+print(deque_list)
+
+deque([0, 1, 2, 3, 4])
+4
+3
+deque([0, 1, 2])
+deque([6, 5, 0, 1, 2])
+6
+5
+deque([0, 1, 2])
+
+
+양쪽에서 입출력이 가능함
+
+-----------------------------------------------------------------------------------------
+
+from collections import deque
+
+deque_list = deque()
+for i in range(5):
+    deque_list.appendleft(i)
+
+print(deque_list)		deque([4, 3, 2, 1, 0])		
+
+
+deque_list.rotate(2)
+print(deque_list)		deque([1, 0, 4, 3, 2])
+
+deque_list.rotate(-2)
+print(deque_list)		deque([4, 3, 2, 1, 0])
+
+deque_list.extend([5, 6, 7])
+print(deque_list)		deque([4, 3, 2, 1, 0, 5, 6, 7])
+
+deque_list.extendleft([9, 10]) 
+print(deque_list)		deque([10, 9, 4, 3, 2, 1, 0, 5, 6, 7])
+				**착각하지 말기 9, 10 이 아님
+
+
+----------------------------------------------------------------------------------------
+
+from collections import OrderedDict  (**집어넣은 순서대로 들어갈 것을 보장하는 함수)
+
+d = dict()
+d['x'] = 100
+d['y'] = 200
+d['z'] = 300
+d['a'] = 400
+print(d)
+
+od = OrderedDict(sorted((d.items()), key=lambda x: x[0]))
+			items = key value 를 튜플로 뽑아냄
+			x(튜플의값) 의 값을 x 의 0번째 값을 키 값으로 해라 
+			 a b c d 의 순서로 맞춰줌
+
+print()
+print(od)
+
+od_list = sorted(od.items(), key=lambda x: x[1])
+print()				x(튜플의값) 의 값을 x 의 0번째 값을 밸류 값으로 해라 
+print(od_list)
+
+******************
+
+{'x': 100, 'y': 200, 'z': 300, 'a': 400}
+
+OrderedDict([('a', 400), ('x', 100), ('y', 200), ('z', 300)])
+
+[('x', 100), ('y', 200), ('z', 300), ('a', 400)]
+
+
+
+--------------------------------------------------------------------------------------------
+
+
+from collections import defaultdict
+
+d = defaultdict(lambda: 100)		//기본 디폴트값을 100으로 주겠다.
+print(d['first'])			//first 값은 없지만, 기본값이 있기 때문에 출력 가능(기본값 출력)
+
+
+d2 = defaultdict(int)
+print(d2['aaa']) 			** 예를 들어 기본값 타입만 주면 0을 출력함
+
+
+s = [('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]	list 타입 튜플
+d2 = defaultdict(list)					
+
+for k, v in s:		키값에 대한 밸류가 리스트라 어펜드가 가능
+    d2[k].append(v)		어떤 값을 누적할때 키 값을 리스트 안에 넣고, 어펜드로 밸류값을 넣음 
+
+print(d2.items())
+
+100
+dict_items([('yellow', [1, 3]), ('blue', [2, 4]), ('red', [1])])
+
+
+
+--------------------------------------------------------------------------------------
+
+from collections import Counter
+
+c = Counter('scientist')	//문자열 넣었을때 객체가 생성되면 자동으로 결과값처럼 생김
+print(c)
+
+print(c['i'])
+print(c['n'])
+
+******
+
+Counter({'s': 2, 'i': 2, 't': 2, 'c': 1, 'e': 1, 'n': 1})	//뭐가 몇개 들어가 있는지 알려줌
+2	//해당 객체에 들어있는 알파벳 숫자 개수 알려줌
+1
+
+
+-----------------------------------------------------------------------------------
+
+from collections import Counter
+
+c = Counter({'red' : 4, 'blue': 2})
+print(c)
+
+print(list(c.elements()))	//Counter 에 있는 항목들을 전부 풀어서 나열해줌
+
+*****
+
+Counter({'red': 4, 'blue': 2})
+['red', 'red', 'red', 'red', 'blue', 'blue']
+
+-------
+
+from collections import Counter
+
+c = Counter(cats=4, dog=6)
+print(c)
+
+print(list(c.elements()))
+
+******************
+
+Counter({'dog': 6, 'cats': 4}) ** 나오는 순서는 보장하지 않는다.
+
+['cats', 'cats', 'cats', 'cats', 'dog', 'dog', 'dog', 'dog', 'dog', 'dog']
+
+
+-------------------------------------------------------------------------------------------
+
+from collections import Counter
+
+c = Counter(a=4, b=2, c=0, d=-2)
+d = Counter(a=1, b=2, c=3, d=4)
+
+print(c + d)	Counter({'a': 5, 'b': 4, 'c': 3, 'd': 2})		더하기
+print(c & d)	Counter({'b': 2, 'a': 1})	       and	//공통되는 부분이 있는가 (ex 4와 1은 1이 공통, 2와 2는 2가 공통, 0은 false, 음수는 0으로 취급 양수)
+print(c | d)	Counter({'a': 4, 'd': 4, 'c': 3, 'b': 2}) or	//비교되는 수 중 가장 큰 수
+
+c.subtract(d)	
+print(c)		Counter({'a': 3, 'b': 0, 'c': -3, 'd': -6})		빼기
+
+**딕셔너리 타입은 정해진 순서가 없이 나온다.
+
+
+-----------------------------------------------------------------------------------------
+
+from collections import namedtuple
+
+Point = namedtuple('my_point', ['x', 'y'])
+p = Point(11, 22)
+print(p)
+print(p.x, p.y)
+print(p[0], p[1])
+
+******
+
+my_point(x=11, y=22)
+11 22
+11 22
+
+---------------------------------------------------------------------------------------
+
+**해당 text 에 있는 문장에서 가장 많이 반복된 단어의 수를 내림차순으로 정렬해 구하시오(중복제거)
+
+
+from collections import defaultdict
+from collections import OrderedDict
+
+text = """A press release is the quickest and easiest way to get free publicity. If
+ well written, a press release can result in multiple published articles about your 
+firm and its products. And that can mean new prospects contacting you 
+asking you to sell to them. ….""".lower().split()
+
+word_count = defaultdict(lambda: 0)    //기본값을 0으로 주겠다. 기본값 출력 가능 (딕셔너리 키/밸류 값 중 밸류 값을 기본값이나 lambda 다음 값으로 정해서 출력이 될 수 있게 하겠다.**그냥 int 도 가능)
+for word in text:			//text 문장을 보면 전부 키 값으로 단어별로 나뉘는데 이것들을 하나하나  word 에 넣어	
+    word_count[word] += 1		//word 에 있는 키 값이 중복될때마다 1씩 추가해 word_count에 추가하겠다.
+word_count_list = OrderedDict(sorted(word_count.items(), key=lambda x:x[1], reverse=True))	//밸류값으로 내림차순을 하겠다.
+print(word_count_list)
+
+
+*******************************************************************************************
+
+from collections import defaultdict
+
+word_count = defaultdict(lambda: 0)
+for word in text:
+    word_count[word] += 1
+
+from collections import OrderedDict
+for k, v in OrderedDict(sorted(word_count.items(), key=lambda t: t[1], reverse=True)).items(): //마지막에 items로 키 밸류값을 구하게 되면
+    print(k, v)									앞의 k, v에 각각 키 밸류 값이 들어가고 프린트하면 위에서 아래로 내려오는 값이 구해지게 됨
+
+
+*** 다른 공식// 
+
+
+----------------------------------------------------------------------------------------------------------
+
+result = []		//리스트 선언
+
+for i in range(10):		//for 문 선언
+    result.append(i)
+
+print(result)
+print()
+
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+*****************
+
+result2 = [i for i in range(10)]	//1번 i, 2번 i에 range(10) 의 첫번째 0 출발 -> 2번 i -> 1번 i
+print(result2)
+
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+**같은 결과 더 간단한 코딩 //내부적으로 더 효율적이고 빠른 코딩
+
+------------------------------------------------------------------------------------------------------
+
+result = []
+
+for i in range(10):
+    if i % 2 == 0:		//짝수일때만 append
+        result.append(i)
+
+print(result)
+
+[0, 2, 4, 6, 8]
+********
+
+result2 = [i for i in range(10) if i % 2 ==0]	//조건이 만족하면 앞에꺼
+print(result2)
+	
+[0, 2, 4, 6, 8]
+**********
+
+result3 = [i if i % 2 ==0 else 99 for i in range(10)]	//짝수일때는 호출, 홀수일때는 99
+print(result3)
+
+[0, 99, 2, 99, 4, 99, 6, 99, 8, 99]
+
+
+
+-----------------------------------------------------------------------------------------
+
+word1 = 'Hello'
+word2 = 'World'
+
+result = [i + j for i in word1 for j in word2]
+print(result)
+
+result = []
+for i in word1:
+	for j in word2:
+	result.append(i+j)	//위의 식을 풀어썼을때
+
+
+result = [i + j for i in word1 for j in word2]
+for k, v in result:
+    print(k, v) 		//수직으로 결과값을 만들고 싶을때
+
+--------------------------------------------------------------------------------------------
+
+
+case1 = ['A', 'B', 'C']
+case2 = ['A', 'B', 'C']
+
+result = [i + j  for i in case1 for j in case2 if i != j]
+print(result)
+
+['AB', 'AC', 'BA', 'BC', 'CA', 'CB']
+
+**자력으로 처음 푼 문제
+
+---------------------------------------------------------------------------------------------
+
+case1 = ['A', 'B', 'C']
+case2 = ['D', 'E', 'F']
+
+result = [[i + j for i in case1] for j in case2]	//리스트가 2개 겹침, case2 가 베이스가 되어서 case1으로 넘어감
+print(result)				//D 빼서 case 1로 A가 나오니 i + j AD 출력 D E F 반복해서 3개 리스트
+
+[['AD', 'BD', 'CD'], ['AE', 'BE', 'CE'], ['AF', 'BF', 'CF']]
+
