@@ -1,0 +1,351 @@
+모듈
+새로운 파일을 만들어 함수를 하나 만든다.
+
+def convert_to_f(celsius_value):
+    return celsius_value * 9.0 / 5 + 32  #섭씨를 화씨로 바꿔주는
+
+***
+
+import New_jun
+
+print("Enter a celsius value:")
+celsius = float(input())
+fahrengeit = New_jun.convert_to_f(celsius)
+print("It's", fahrengeit, "degrees Fahrenheit")
+
+원래 파일에서 import 를 해준 후 코드 작성시 불러와준다
+
+import New_jun as nj
+
+print(nj.convert_to_f(34))
+
+as 를 이용해서 짧게 만들고, 코드 자체도 간단하게 만들 수 있다.
+
+*****
+
+모듈 안에 있는 많은 함수들 중 하나만 사용하고 싶을때
+
+from New_jun import convert_to_f
+
+print(convert_to_f(34))
+
+바로 다이렉트로 사용하겠다 했을때
+
+
+from New_jun import *   <- 안에 있는 많은 함수들을 몽땅 사용하겠다. (비추)
+
+			- 함수명이 겹칠 수 있기 때문에 문제 발생을 불러올 수 있다.
+
+
+
+*** 모듈에서 테스트를 하면, 결과값이 본문에서 실행했을때 따라온다. (테스트 코드를 하나하나 지워야 하는 귀찮음 발생)
+
+그래서
+
+if __name__ == "__main__":		/// __ 언더바가 붙으면 고정적인 역할을 하는 변수  
+    print("모듈 테스트")		// 테스트 코드는 if__name__ == "__main__": 으로 작성하면 됨
+    print(convert_to_f(45))
+else:
+    print("임포트 실행")
+
+를 통해 실행하면 본문으로 넘어갔을때 모듈 테스트 결과값이 따라오지 않는다.
+else 값은 본문에서 같이 실행됨
+
+--------------------------------------------------------------------------------------------
+
+
+패키지 - 모듈들의 모임
+
+예제) 인터넷에서 주식 정보를 가져와 데이터베이스에 저장, 필요한 정보를 계싼
+
+1) 디렉토리 구성
+	패키지 명: roboadvisor
+	
+	기능
+	crawling: 주식 관련 데이터를 인터넷에서 가져옴
+	database: 가져온 데이터를 데이터베이스에 저장
+	analysis: 해당 정보를 분석, 의미있는 가치 추출
+
+	my_package--roboadvisor 	--analysis - __init__.py, series.py, statics.py
+				--crawling - __init__.py, parser.py, scrap.py
+				--database - __init__.py, connection.py, query.py 
+			         -__init__.py
+
+
+파이참에서 파일 세팅 프로젝트 이름에 가보면 pip setuptools 가 있는데
+여기서 임포트 파일을 불러옴 (사진 참고) 
+import 를 사진 파일 말고 우리가 정한 곳에서도 불러오게 하기 위해서 설정을 해야함
+
+오른쪽 위에 톱니바퀴 오른쪽 밑에 폴더 그림 누르면 맨 밑에 있는 site-packages 
+우리의 패키지들이 들어감
+
+추가해서 그전에 만들어둔 패키지들을 따로 선택해서 추가해주면 앞으로 여기에 있는 것들도
+참고해서 임포트 하겠다는 말
+
+
+디렉토리 별 __init__.py 파일 작성		*** 3.3 버전 밑에만 호환을 위해 작성해주는 것// 그 이상이면 따로 필요없음
+- 해당 디렉토리가 파이썬 패키지라고 선언하는 초기화 스크립트
+- 패키지 개발자, 설치 시 유의사항 등의 메타 데이터를 포함
+- 패키지의 구조를 기술
+
+
+*****다른 버전간 모듈간의 충돌을 피하기 위해 가상환경을 만들어서 사용해준다.
+
+
+---------------------------------------------------------------------------------------------
+
+
+예외처리
+
+for i in range(10):
+    try:
+        print(10 / i)
+    except ZeroDivisionError as e:
+        print(e)
+        print("Not divided by 0")
+
+****
+
+division by zero		//에러잡음
+Not divided by 0
+10.0
+5.0
+3.3333333333333335
+2.5
+2.0
+1.6666666666666667
+1.4285714285714286
+1.25
+1.1111111111111112
+
+
+--------------------------------------------------------------------------
+
+for i in range(10):
+    try:
+        result = 10 / i
+    except ZeroDivisionError as e:
+        print(e)
+        print("Not divided by 0")
+    else:
+        print(10/ i)
+
+*******
+
+division by zero
+Not divided by 0
+10.0
+5.0
+3.3333333333333335
+2.5
+2.0
+1.6666666666666667
+1.4285714285714286
+1.25
+1.1111111111111112
+
+----------------------------------------------------------------------------------
+
+try:
+    for i in range(1, 10):
+        result = 10 // i
+except ZeroDivisionError as e:
+    print("Not divided by 0")
+finally:
+    print("프로그램 종료")
+
+***
+
+프로그램 종료
+
+------------------------------------------------------------------------------------------------
+
+while True:
+    value = input("변형할 정수값을 입력해 주세요: ")		//인풋은 무조건 스트링으로 받는다
+    for digit in value:
+        if digit not in "0123456789" :
+            raise ValueError("숫자를 입력하지 않았습니다.")		// 예외를 발생시켜줌
+    print("정수값으로 변환될 숫자: ", int(value))
+
+----------------------------------------------------------------------------------------------
+
+
+
+def add(a: int, b:int) -> int:	//명시적으로 타입을 적는 것.
+    return a + b
+
+print(add(10, 5))
+print(add([1,2],[3]))
+print(add("hi", "there"))
+			//강제성은 없지만, 실행 전에 타입이 다르다고 파이참에서 알려줌
+			//mypy 를 통해 실행시키면 에러를 알려줌
+			// 즉 사용하는 사람 마음
+
+
+--------------------------------------------------------------------------------------------------
+
+ARABIC_TO_ROMAN = [
+    (1000, "M"), (900, "CM"), (500, "D"), (400, "CD"),
+    (100, "C"), (90, "XC"), (50, "L"), (40, "XL"), (10, "X"),
+    (9, "IX"), (5, "V"), (4, "IV"), (1, "I")
+]
+
+def convert_to_roman_numeral(number: int) -> str:
+
+    result = list()
+    for arabic, roman in ARABIC_TO_ROMAN:
+     count, number = divmod(number, arabic) #x,y 를 받아 x를 y로 나눈 몫과 나머지를 튜플 형태로 출력
+     result.append(roman * count) if count != 0 else result
+    print(result)
+    return "".join(result)
+
+print(convert_to_roman_numeral(1230))
+
+****************
+['M', 'CC', 'XXX']
+MCCXXX
+
+------------------------------------------------------------------------------------
+
+
+자연수 N 을 입력받아 대해 N이 짝수이면 N! 을, 홀수이면 시그마N 을 구하는 코드를 작성하시오
+
+result = []
+while True:
+    value = input("숫자를 입력하시오")
+    for i in value:
+        if int(i) % 2 == 0:
+          for i in range(int(i)):
+              result.append(i+1)
+
+ print(result)
+
+print("숫자입력")
+num = input()
+int_num = int(num)
+
+result = []
+for i in range((int)(num)):
+    if int(num) % 2 == 0:
+        result.append(int)num+1)
+print(result)
+
+
+**********************************
+
+input_data = input()
+data = int(input_data)
+if data % 2 ==0:
+    result = 1
+    for i in range(1, data+1):
+        result *= i
+else:
+    result = 0
+    for i in range(1, data+1):
+        result += i
+print(result)				//답
+
+
+------------------------------------------------------------------------------------------
+
+야구게임
+야구 게임 문제
+goal = "386"
+input_data = input()  예) 236
+
+
+strike = 0
+ball = 0
+
+for number in goal:  **goal 에서 number로 숫자하나씩 들어감	**input_data 에 236 을 넣었다고 생각해보자
+    if input_data.count(number) > 0:				//goal 386 이 number 에 하나씩 들어가서
+        if input_data.find(number) == goal.find(number):	//input.data 즉 우리가 넣은 3개의 숫자와 비교해서.
+            strike += 1				//count(number) 안에 처음 숫자 3이 몇개 있는지 비교
+        else:					//** 경우엔 3이 하나 있으니 1 출력 후  if 문으로 들어감	
+            ball += 1					// 양쪽에 있는 number(숫자 1개** 처음에는 3)가 같은가를 비교해서 
+						// 같은 자리에 있다면 strike 다른곳에 있으면 ball, 없으면 아웃	
+print('Strike: ', strike, "Ball: ", ball)
+
+
+
+인터넷 야구 게임 답
+import random
+
+ran_num = ["0", "0", "0"]
+ran_num[0] = str(random.randrange(1, 9, 1))
+ran_num[1] = ran_num[0]
+ran_num[2] = ran_num[0]
+
+while (ran_num[0] == ran_num[1]):
+    ran_num[1] = str(random.randrange(1, 9, 1))
+while (ran_num[0] == ran_num[2] or ran_num[1] == ran_num[2]):
+    ran_num[2] = str(random.randrange(1, 9, 1))
+
+strike = 0
+ball = 0
+
+print()
+while (strike < 3):
+    num = str(input("숫자 3자리 입력: "))
+    if (num == ""):
+        print("숫자를 입력해주세요.")
+        continue
+
+    strike = 0
+    ball = 0
+
+    for i in range(0, 3):
+        for j in range(0, 3):
+            if(num[i] == str(ran_num[j]) and i == j):
+                strike += 1
+            elif(num[i] == str(ran_num[j]) and i != j):
+                ball += 1
+    print("Strike:", strike, "Ball", ball)
+
+-------------------------------------------------------------------------------------------------------
+
+마방진		3x3 마방진을 생각하자. 가운데 밑에 1이 들어가고, 오른쪽 밑으로 숫자를 늘려나간다. 갈 곳이 없다면, 입체적으로 붙여놓고 생각해라. 오른쪽 밑에가 숫자가 있다면 바로 위로 가라.
+
+from typing import List
+
+
+def mabangjin(arr: List) -> None: //들어오는 값은 리스트타입이어야 하고, 리턴은 None 없다.
+    row = len(arr) - 1	//열(가로)에는 리스트의 길이에서 하나를 뺀 값
+    col = len(arr) // 2	//행(세로)는 리스트의 길이를 2로 나눈 값에서 몫만 출력한 값
+    value = 1		//value 는 1
+
+			//위의 식은 마방진을 보면서 하면 이해가 된다. 1이 들어가야 하는 곳을 정하는 식인데 3x3 으로 생각할때 가운데 가장 밑으로 숫자가 가야하므로, 열에서 하나를뺀 값과, 행 값을 2로 나눈 몫의 값이 들어간 
+			//리스트에 1이 들어가야 마방진을 만들기 위한 첫번째 조건을 만족시킬 수 있다. 공식 이후에 value 1은 당연히 가운데 중간에 1을 넣기 위한 값으로 생각하면 된다.
+
+
+    arr[row][col] = value	//열과 행의 값을 밸류값으로 정함으로써 앞으로 오게 될 인덱스 값의 위치에 숫자를 하나씩 넣게 된다.
+    value += 1		//그리고 넣게 된 수 이후에는 1씩 증가하게 함으로써 1~9까지의 숫자(3X3 마방진을 예로 들었을때, 5x5 라면 25까지)를 순차적으로 넣을 수 있게 된다.
+
+    while value <= len(arr) ** 2:	//value의 값이 리스트 길이의 제곱보다 작거나 같을때 -> 즉, 3x3 마방진에서는 3x3은 9이기 때문에 9까지의 숫자를 대입해서 값을 구할 수 있게 만든다.
+        if arr[(row + 1) % len(arr)][(col + 1) % len(arr)] == 0:  //만약 열과 행 값이 0과 같을때 밑의 두개의 식을 적용한다. 열(가로)의 시작은 이미 가운데 중간에 1이 들어가 있기 때문에 총 인덱스 값(3) 중 내부 인덱스 값으로 2를 갖고 있다(0, 1, 2)
+            row += 1					  //즉, [(2+1)%3] 과 [(1+1)%3] 여기서 뒤의 값은 행(세로)의 가운데 중간 인덱스 값을 구한것. 리스트 인덱스 개수는 3이다. 모르겠으면 3x3 마방진을 무조건 그려라	
+            col += 1					// %계산은 나눈 값의 나머지이기 때문에 0과 2이다. 마방진에서 열(가로) 0 행(세로) 2 는 오른쪽 가장 위인데, 여기서의 식은 해당 [0][2]가 0인가에 대한 true false를 물어보고 있다. 이 계산으로 영향을 줄 수 있는건 없다. 단지, 해당 인덱스의 공간 값이 0인지를 물어보는 true false 일뿐이다. 
+            arr[row % len(arr)][col % len(arr)] = value	//해당 식이 true 였기 때문에 밑에 row +=1 과 col +=1 을 실행해서 원래 1이 있던 가운데 밑 (2,1) 의 값을 1씩 증가시킨다. (3,1) 이 값을 다시 [3%3] , [2%3] 한 인덱스 값을 [0][2] value 에 넣고, 이 인덱스 공간에 원래 value 값이었던 1 + 1 을 해준다( value += 1) 그래서 오른쪽 맨위에 2가 들어가게 된다.
+            value += 1				// 바로 위 식에 있는 value 값 2에 1을 더해 3으로 while 문에 들어간다. 3은 9보다 작기에, if 문이 실행된다.
+        else:					//이때 if 문에 적용되는 식은 [0][2] 이다. [(0+1)%3] , [(2+1)%3] = [1],[1] 이기 때문에 마방진에서 [1],[1] 의 위치에 있는건 0임으로 true이기 때문에 밑에 있는 식으로 이동한다.
+            row -= 1					//동일한 방식으로 계산, [1%3][3%3] 으로 밸류값 3은 [1][0]에 들어가게 된다. 다시 value 1 추가 후(4) while 로 이동
+            arr[row % len(arr)][col % len(arr)] = value	//4 역시 9보다 작기에 if 문으로 입장-> 3이 있던 곳은 [1][1] -> 계산 [2%3][2%3]=[2][2] 공간은 마방진의 1이 있는 곳. 즉 0이 아니기에 false로 인식해서 else로 간다.
+            value += 1				//else 에서는 row-1 이라 [1][2] ->계산해도 같은 값, 즉, 왼쪽 맨 위로 간다. **반복. 
+
+
+map = []				//맵은 어레이로 만들겠다 즉, [] 이상태
+for i in range(5):			// i를 5번 돌릴거다
+    map.append(list())		// [ [ ] ] 이런식으로 리스트를 맵 안에 넣을거다
+    for k in range(5):		// k 를 5번 돌릴거다
+        map[i].append(0)		// map 의 i 번째 인덱스에 0 을 넣는다.
+        print(f"{map[i][k]:2d} ", end='')	// map i는 [열row가로] k는 [행col세로]  :2d 는 십자리 수까지 표현해라 (예쁘게 나오게 하기 위해서) end 는 가로로 나오게 해라 (원래는 세로로 나오지만, end 를 붙여서 줄바꿈 없이 나오되 :2d 를 이용해서 십자리 수로 깨끗하게 나오게 해준다. 
+    print()				// 원래는 줄을 한칸 띄워서 진행하지만, for 문 안에 있기 때문에 end 쪽에 영향을 주어서 한칸 띄워서 표현하는 방식을 나타내준다.
+
+mabangjin(map)			//마방진 함수에 map 을 넣어라
+print()				//한칸 띄우고
+for i in range(5):			// i 를 5번 돌릴거다.
+    for k in range(5):		// k 도 5번 돌릴거다.
+        print(f"{map[i][k]:2d} ", end='')	// 대신 i 에 대한 k의 값을 5번 먼저 돌린다. 즉 열row가로 에 대한 행col세로의 값을 5번 돌려서 줄 바꿈 없이 가로로 나타낸다. 대신 십자리 수까지 나타는데, 그 수는 마방진을 만들기 위한 위 공식으로 대입한다.
+    print()				//가로로 작성시 한칸씩 띄워서 진행하게 해준다.
+
+
