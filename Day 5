@@ -1,0 +1,614 @@
+제너레이터
+
+파이썬에서 약간 고급진 내용
+
+예) 커피를 50잔 시켰을때 한잔한잔 만들어서 많은 사람을 시켜 배달하는게 아닌
+
+하나의 큰 통에 커피 50잔만큼의 양을 넣어 한사람이 해결할 수 있게 만드는 개념
+
+차이는 
+
+50잔을 만들어 가져갔을때 바로 마실 수 있지만,
+
+큰 통으로 가져가면 한잔씩 만들어서 줘야 함
+
+즉, 한잔씩 만드는 동작이 필요함 
+***
+
+def square_number(nums):  #nums 에 숫자가 들어오면 리스트를 만들어 nums 의 숫자를 차례로 i 에 넣어준다.
+    result = []
+    for i in nums:               # for 문으로 nums 에서 하나씩 받은 숫자를 i 에 넣어 제곱시킨다.
+        result.append(i * i)    #리스트를 주면 항목을 제곱 시켜주는 함수 식
+    return result
+
+my_nums = square_number([1,2,3,4,5])
+
+print(my_nums)
+
+*******
+
+[1, 4, 9, 16, 25]
+
+-------------------------------------
+
+이걸 제네레이터로 바꿔보자
+
+def square_number(nums):
+    for i in nums:
+        yield i * i
+
+my_nums = square_number([1, 2, 3, 4, 5])
+print(my_nums)		//큰 통으로 가져가면 한잔씩 만들어서 줘야 함
+
+print(next(my_nums))  	//즉, 한잔씩 만드는 동작이 필요함
+print(next(my_nums))
+print(next(my_nums))
+print(next(my_nums))
+print(next(my_nums))
+
+*******
+<generator object square_number at 0x00000186FFFAC9C8>		
+				**객체의 레퍼런스값
+1
+4
+9
+16
+25
+
+print(next(my_nums))   ** 리스트 안에 있는 항목 이상을 요구하면 에러 발생
+
+
+** 필요할때마다 줄 수 있는 제네레이터, 리소스를 사용하는 것에 있어서 많이 아낄 수 있다.
+** 많은 양의 정보를 다룰 때 효율적이다.
+
+print(zip([1,2,3],[4,5,6]))  #zip 객체 next 로 하나씩 빼서 가져올 수 있다.
+print(next(zip([1,2,3],[4,5,6])))	 # 대신 그렇다고 zip 이 제네레이터 객체라고 볼 순 없다. ***조사가 필요함
+
+*****
+
+<zip object at 0x00000186FFFBD9C8>
+(1, 4)
+
+*******************
+
+그래서 일반적으로 제네레이터로 값을 구할때는 for 구문을 사용한다.
+
+def square_number(nums):
+    for i in nums:
+        yield i * i
+
+my_nums = square_number([1, 2, 3, 4, 5])
+
+print(my_nums)
+
+for num in my_nums:
+    print(num)
+
+******
+
+1
+4
+9
+16
+25
+
+****제네레이터는 한번 돌면 끝이다. 예를들어 지금까지 만든 구문으로 볼때, next를 이용해서 한번씩
+다뽑고나면 for 문에서는 돌아가지 않는다.
+
+****next를 이용해서 순서대로 뽑는 방법 밖에는 없다. 1, 3, 5 이런식으로 뺄 순 없음
+
+*** 다른 방법은 없는가.
+
+리스트로 빼면 리스트로 나오기 때문에 이건 제네레이터로 볼 수 없음.
+
+
+my_nums = (x*x for x in [1,2,3,4,5])
+
+print(my_nums)
+
+for num in my_nums:
+    print(num)
+
+*****
+<generator object <genexpr> at 0x000001DE7140C9C8>
+1
+4
+9
+16
+25
+
+튜플 형식으로 하면 제네레이터 값을 가져올 수 있다.
+
+*****
+
+a = [1, 2, 3, 4, 5]
+print(tuple(a))
+
+my_nums = tuple(x * x for x in a)	//여기에 튜플을 쓰는가 아닌가에 대한 결과값이 달라짐
+
+print(my_nums)
+
+for num in my_nums:
+    print(num)
+
+******
+
+(1, 2, 3, 4, 5)
+(1, 4, 9, 16, 25)
+1
+4
+9
+16
+25
+
+튜플방식으로도 나올 수 있다.
+
+
+********************
+
+a = [1, 2, 3, 4, 5]
+
+my_nums = (x * x for x in a)
+print(my_nums)
+print(list(my_nums))
+
+******
+
+<generator object <genexpr> at 0x0000021DF1F7CA48>
+[1, 4, 9, 16, 25]
+
+-------------------------------------------------------------------------------------
+
+프로그래밍 랭기지 이론에서 보면 
+Fisrt class function 이라는 개념이 있다.
+
+function 을 first class 취급해주겠다.
+
+이걸 수용하는 언어도 있고, 수용하지 않는 언어도 있다.
+
+function 일반 변수처럼 취급하겠다.
+변수를 만들고 인자로 받고 리턴도 function 으로 해주겠다
+
+C는 수용하지 않은 언어
+파이썬은 이런 개념을 받아들인 언어
+
+def double_fun(x):
+    return x * 2
+
+print(double_fun(3))
+
+a = double_fun   #function 자체를 변수에 담는다.
+
+print(double_fun)
+print(a)
+
+*****
+
+<function double_fun at 0x000002523E0D5798>
+<function double_fun at 0x000002523E0D5798>
+
+두개 다 같은 객체를 참조하고 있다.
+
+그 말은
+print(a(5))
+
+이런식으로 한다해도
+
+값(10) 은 나온다. 
+
+------------------------------------------
+
+from typing import Callable, List
+
+def double_fun(x):  # 인자를 하나 받어 받아서 func 에 넣어서 결과를 append 해서 끝나면 result 해줌
+    return x * 2
+
+def make_double_list(func:Callable, args:List)-> List:  #Callable 을 해주면 뭔가 함수가 들어온다는걸 미리 알 수 있음
+    result = []                                         # 리턴 타입은 리스트를 받는다. 라는 걸 알려줌
+    for i in args:
+        result.append(func(i))
+
+    return result
+
+**
+def square(x):
+    return x + 2
+
+def reflect(x):
+    return x + 1
+**
+
+
+
+input_list = [1, 2, 3, 4, 5]
+
+doubles = make_double_list(double_fun, input_list)
+
+print(doubles)
+
+# 굳이 이렇게 만든 이유는 여러개 function 이 있다고 했을때 써먹을 수 있음
+
+예)
+
+**
+square = make_double_list(square, input_list)
+reflect = make_double_list(reflect, input_list)
+**
+
+----------------------------------------------------------------------------
+
+import time
+
+def log_formatter(msg):     #인자를 받는데 함수 안의 함수 속 인자를 받겠다.
+    def log_message():	  				# 두개의 함수의 객체는 따로 있다. 함수 안에 정의만 되어있는것. 
+        time_str = time.strftime('%c', time.localtime(time.time()))	그렇기 때문에 log_formatter 가 지워져도 log_message 객체는 남아있다.
+        print(time_str, end='')
+        print()
+        print('--->', end='')
+        print()
+        print(msg)		# 1 msg 는 로컬 변수이기 때문에 함수가 끝나면 사라진다.
+    return log_message 	# 함수를 리턴받겠다.  4 클로저가 있으면 함수가 끝나도 기억하고 사라지지 않는다.
+
+log_msg = log_formatter('test log') 	# 2 여기서 msg 는 사라진다.
+print(log_msg)
+print()
+log_msg()		# 3 하지만 해당 함수가 사라졌지만 접근이 가능하다 왜일까.
+
+***********
+
+<function log_formatter.<locals>.log_message at 0x000002516C6E5C18>
+
+Wed Jul 15 10:33:15 2020
+--->
+test log
+
+**************
+
+# first fuction 개념, 함수 안에서 함수를 만들어서 함수를 리턴 받을 수 있다.
+
+****
+
+스코프 = 네임스페이스 in 파이썬
+
+log_formatter 함수의 로컬변수 msg 는 함수실행이 된 종료된 후 사라지는 변수
+종료된 이후에도 참조가 가능? log_message를 클러저(closure) 라 함
+클로즈는 다른 함수의 지역변수값을 그 함수가 종료된 후에도 기억
+
+
+
+del log_formatter 		#del 로 지워보자
+try:
+    print(log_formatter)
+except NameError:
+    print('log_formatter 함수는 존재하지 않습니다.')
+
+log_msg()  # 날려버렸음에도 test log 가 나온다.
+
+**************
+
+log_formatter 함수는 존재하지 않습니다.
+Wed Jul 15 10:33:15 2020
+--->
+test log
+
+
+  # 두개의 함수의 객체는 따로 있다. 함수 안에 정의만 되어있는것. 
+그렇기 때문에 log_formatter 가 지워져도 log_message 객체는 남아있다.
+
+*************************
+
+first class function 을 지원하는 언어의 네임 바인딩 기술
+어떤 함수를 함수 자신이 가지고 있는 환경과 함께 저장한 레코드
+함수가 가진 프리변수(free variable) 를 클로저가 만들어지는 당시의 값과 레퍼런스에 매핑하는 역할
+자신의 영역 밖에서 호출된 함수의 변수값과 레퍼런스를 복사하고 저장
+
+free variable
+코드블럭 안에서 사용은 되지만 그 코드블럭안에서 정의되지 않은 변수
+
+log_message 에서 msg 는 자신이 만든게 아닌 log_formatter msg 이기 때문에 이때
+log_message 에서 msg 를 free variable 이라고 한다.
+
+--------------------------------------------
+
+def outer_func():
+    msg = 'Good Morning'	 #msg 를 밖에서 볼때 global 로 보고 안에서는 프리변수 로 본다.
+    def inner_func():		# 자기가 정의하지 않은 변수지만 내가 쓴다. - 프리변수
+        print(msg)		# 클로저기 때문에 외부에서 inner 를 불러 올 수 있는 구조가 있다.
+
+    return inner_func()
+
+outer_func()
+
+******
+
+Good Morning
+
+---------------------------------
+
+def outer_func():
+    msg = 'Good Morning'    
+    def inner_func():
+        print(msg)
+
+    return inner_func	#안에서가 아니라 밖에서 실행하기 위해
+
+func = outer_func()		# 여기서 선언을 다시 해주면
+print(func)		#같은 결과값을 가져온다.
+func()
+
+***********************
+
+<function outer_func.<locals>.inner_func at 0x000002A93B995AF8>
+Good Morning
+
+************************
+
+func = outer_func()
+print(func)
+print(dir(func)) #dir 안에 객체를 넣어주면, 안에 들어있는 멤버들을 전부 끄집어내준다.
+print(type(func.__closure__))	#우리가 알고 싶은 클로저를 다시 따로 타입으로 묶어보면
+***
+<class 'tuple'> #튜플이 나온다.
+**
+
+이걸 찍어보면
+print(func.__closure__)
+***
+(<cell at 0x00000258D69867F8: str object at 0x00000258D694CA70>,) # , 하고 뒤에 아무것도 안나오니 항목이 하나밖에 없다는걸 뜻한다.
+튜플인데 항목이 하나다. **두번째 항목은 없다.
+
+항목을 하나 찍어보면
+print(func.__closure__[0])
+<cell at 0x000001E385E467F8: str object at 0x000001E385E0CA30>
+
+cell 인데 str 오브젝트를 갖고 있다는 의미다.
+
+cell 이 뭘 갖고 있는지 보기 위해선
+print(func.__closure__[0].cell_contents) 이 필요하고
+
+결과값은
+Good Morning 이 나온다.
+
+cell 은 클로저의 값을 갖고 있는 contents 라 말할 수 있다
+
+
+************************************************
+
+결국 closure 즉, inner_func 가 값을 복사해서 가지고 있는거다.
+
+클로저를 구현하기 위해서 내부적으로 값을 복사해서 갖고 있는 메커니즘을 사용했다.
+
+
+---------------------------------------------------------------------------------------------------
+
+데코레이터 설명을 위해 지금까지 장황하게 클로저 설명을 했다.
+
+다시 아까 log 코드로 가보면
+
+
+import time
+
+def log_formatter(msg):     #인자를 받는데 함수 안의 함수 속 인자를 받겠다.
+    def log_message():      # 두개의 함수의 객체는 따로 있다. 함수 안에 정의만 되어있는것. 그렇기 때문에 log_formatter 가 지워져도 log_message 객체는 남아있다.
+        time_str = time.strftime('%c', time.localtime(time.time()))
+        print(time_str, end='')
+        print()
+        print('--->', end='')
+        print()
+        print(msg)
+    return log_message # 함수를 리턴받겠다.
+
+test_log_msg = log_formatter('test log')
+runtime_log_msg = log_formatter('runtime log')
+
+test_log_msg()
+runtime_log_msg()
+
+*******************
+
+Wed Jul 15 11:13:44 2020
+--->
+test log
+Wed Jul 15 11:13:44 2020
+--->
+runtime log
+
+------------------------------------------------
+
+import time
+
+def log_decorator(param_func):
+    def log_message():
+        time_str = time.strftime('%c', time.localtime(time.time()))
+        print(time_str, end='')
+        print('--->', end='')
+        return param_func()  #  1 param_func 를 실행해라는 의미는 위에 log_decorator 를 실행하라는 의미,
+    return log_message      #  2 즉, 밑에 def test_log_msg 와 runtime_log_msg를 실행시킨다.
+
+def test_log_msg():                     #전에는 스트링을 받았는데 이번에는 함수를 받아 함수를 실행하게 만든 것
+    print('This is tes log message')
+
+def runtime_log_msg():
+    print('This is runtime log message')
+
+test_log = log_decorator(test_log_msg)      #3 .단독으로 실행하면 this is.. 가 나오는데, deco에 넣어서 실행하면
+runtime_log = log_decorator(runtime_log_msg) #log_message 함수 안까지 실행해서 결과값을 만든다.
+
+test_log()  #log_message 를 부른것과 같은 개념
+print()
+runtime_log()   #log_message 를 부른것과 같은 개념
+
+
+
+***********************
+
+Wed Jul 15 11:36:24 2020--->This is tes log message
+
+Wed Jul 15 11:36:24 2020--->This is runtime log message                  
+
+
+----------------------------------
+
+import time
+
+def log_decorator(param_func):
+    def log_message():
+        time_str = time.strftime('%c', time.localtime(time.time()))
+        print(time_str, end='')
+        print()
+        print('--->', end='')
+        print()
+        return param_func()
+    return log_message
+
+@log_decorator
+def test_log_msg():
+    print('this is test log message')
+
+@log_decorator
+def runtime_log_msg():
+    print('this is test runtime message')
+
+test_log_msg()
+print()
+runtime_log_msg()
+
+*************
+
+Wed Jul 15 11:37:29 2020--->this is test log message
+
+Wed Jul 15 11:37:29 2020--->this is runtime message
+
+같은 값을 도출해내지만, @log_decorator 를 이용해서 간단히 만들 수 있다.
+
+-----------------------------------------------------------------------------------
+
+조금 다르게 변형해보자
+
+import time
+
+def log_decorator(param_func):
+    def log_message():
+        time_str = time.strftime('%c', time.localtime(time.time()))
+        print(time_str, end='')
+        print('--->', end='')
+        #print('this is test log message')
+        return param_func() # 함수 실행
+
+    return log_message
+
+@log_decorator
+def test_log_msg():
+    print('this is test log message')
+
+@log_decorator
+def runtime_log_msg(host, ip):		# 여기에 값을 넣었다.
+    print(f'this is runtime message from {host}:{ip}')
+
+test_log_msg()
+print()
+runtime_log_msg('localhost', '192.168.1.10')	# 인자를 주고 결과를 보니 에러가 났음
+
+** 에러 결과 log_message() takes 0 positional arguments but 2 were given
+
+
+위에 있는 log_message 에 인자가 없어서 그러니, 2개를 주면 가능하지만,
+그렇게 생각하면 3개나 4개가 필요한 애들은 어떻게 할거냐
+
+그래서 
+
+이를 해결하기 위한 방법이.
+
+
+import time
+
+def log_decorator(param_func):
+    def log_message(*args, **kwargs):	# 이렇게 인자를 넣어주면 가능    #리스트와 튜플타입에 가변인자를 받는것. **딕셔너리 타입 // 인자가 몇개와도 가능
+        time_str = time.strftime('%c', time.localtime(time.time()))	     # 순서는 지켜야함, 리스트와 튜플은 앞에 딕셔너리는 뒤에
+        print(time_str, end='')
+        print('--->', end='')
+        #print('this is test log message') # 여기도
+        return param_func(*args, **kwargs) # 함수 실행
+
+    return log_message
+
+@log_decorator
+def test_log_msg():
+    print('this is test log message')
+
+@log_decorator
+def runtime_log_msg(host, ip):	#스트링 인자니까 *args 에서 몇개의 인자를 주든 상관없이 받을 수 있음
+    print(f'this is runtime message from {host}:{ip}')
+
+test_log_msg()
+print()
+runtime_log_msg('localhost', '192.168.1.10')
+
+*******
+
+Wed Jul 15 13:06:35 2020--->this is test log message
+
+Wed Jul 15 13:06:35 2020--->this is runtime message from localhost:192.168.1.10
+
+----------------------------------------------
+
+
+import time
+
+def log_decorator(param_func):
+    def log_message(*args, **kwargs):
+        time_str = time.strftime('%c', time.localtime(time.time()))
+        print(time_str, end='')
+        print('--->', end='')
+        #print('this is test log message')
+        return param_func(*args, **kwargs) # 함수 실행
+
+    return log_message
+
+@log_decorator
+def test_log_msg():
+    print('this is test log message')
+
+@log_decorator
+def runtime_log_msg(host_info):
+    print(f'this is runtime message from {host_info["hostname"]}:{host_info["address"]}') #딕셔너리 타입
+
+hosts ={"hostname" : "localhost", "address" : "192.168.1.13"}
+test_log_msg()
+print()
+runtime_log_msg(hosts)
+
+
+*****************
+
+Wed Jul 15 13:15:27 2020--->this is test log message
+
+Wed Jul 15 13:15:27 2020--->this is runtime message from localhost:192.168.1.13
+
+*********************
+
+만약 s 를 앞에 넣어주면(뒤에 넣으면 에러난다.)
+
+@log_decorator
+def runtime_log_msg(s, host_info):
+    print(f'this is {s} runtime message from {host_info["hostname"]}:{host_info["address"]}')
+
+hosts ={"hostname" : "localhost", "address" : "192.168.1.13"}
+test_log_msg()
+print()
+runtime_log_msg('ss', hosts)
+
+
+************
+
+Wed Jul 15 13:17:09 2020--->this is test log message
+
+Wed Jul 15 13:17:09 2020--->this is ss runtime message from localhost:192.168.1.13
+
+*** 
+
+어떤 인자가 들어가도 상관없고 개수도 상관없지만, 순서(타입)는 지켜야 한다.
+
+--------------------------------------------------------------------------------------
+
+
